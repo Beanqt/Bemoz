@@ -1,0 +1,154 @@
+.custom-file-box {
+  background: #f7f7f7;
+  position: relative;
+  text-align: center;
+  min-height: 130px;
+  overflow: hidden;
+
+  @include prefixer(border-radius, 4px, moz webkit spec);
+  @include prefixer(box-shadow, 0 1px 1px rgba(0,0,0,0.5), moz webkit spec);
+
+  input {
+    visibility: hidden;
+    position: absolute;
+    opacity: 0;
+  }
+  .loader.active:after {
+    width: 20px;
+    height: 20px;
+    top: 5px;
+    right: 5px;
+    left: initial;
+    margin: 0;
+  }
+  .uploaded {
+    opacity: 0;
+    visibility: hidden;
+    position: relative;
+    background: inherit;
+    min-height: inherit;
+    z-index: -1;
+
+    @include prefixer(transition, all .5s, moz webkit spec);
+    @include prefixer(transform, scale(0.8), moz webkit spec);
+
+    .custom-file-box-actions {
+      text-align: center;
+      font-size: 0;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.61);
+      opacity: 0;
+      visibility: hidden;
+
+      @include position(absolute, 0 0 0 0);
+      @include prefixer(border-radius, 4px, moz webkit spec);
+      @include prefixer(transition, all .2s, moz webkit spec);
+
+      .action-inside {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -17px;
+        @include prefixer(transform, translate(-50%), moz webkit spec);
+      }
+
+      .action-item {
+        display: inline-block;
+        text-align: center;
+        vertical-align: top;
+        font-size: 16px;
+        margin: 0 5px;
+        width: 34px;
+        height: 34px;
+        padding: 6px;
+        color: #fff;
+        cursor: pointer;
+        transition: .2s;
+        transform: scale(0.9);
+
+        @include prefixer(border-radius, 50%, moz webkit spec);
+
+        &.eye {
+          background: #5cb85c;
+        }
+        &.custom-file-box-delete {
+          background: #ef1a1a;
+        }
+
+        &:hover {
+          transform: scale(1);
+        }
+      }
+    }
+    .custom-file-box-info {
+      text-align: left;
+      line-height: 16px;
+      background: rgba(54, 65, 80, 0.73);
+      color: #fff;
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      padding: 6px;
+      border-radius: 0 0 3px 3px;
+      font-size: 12px;
+    }
+    .preview {
+      position: relative;
+
+      i {
+        font-size: 70px;
+        color: #364150;
+        margin-top: 7px;
+      }
+      span {
+        position: absolute;
+        top: 42px;
+        left: 0;
+        right: 0;
+        color: #fff;
+      }
+
+      img {
+        margin: auto;
+      }
+    }
+
+    &:hover {
+      .custom-file-box-actions {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+  label {
+    cursor: pointer;
+    margin: 0;
+
+    @include position(absolute, 0 0 0 0);
+
+    i {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: -35px 0 0 -32px;
+      font-size: 70px;
+      color: #343a4a;
+    }
+  }
+
+  &.active {
+    .uploaded {
+      opacity: 1;
+      visibility: visible;
+      z-index: 0;
+
+      @include prefixer(transform, scale(1), moz webkit spec);
+    }
+  }
+}
+
+.uploadFileInput {
+  visibility: hidden;
+  position: absolute;
+}

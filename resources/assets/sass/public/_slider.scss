@@ -1,0 +1,163 @@
+.slider {
+  max-width: 1920px;
+  margin: 0 auto 41px auto;
+  overflow: hidden;
+  position: relative;
+
+  @include prefixer(box-shadow, 0 2px 3px rgba(35, 35, 36, 0.1), moz webkit spec);
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .carousel-inner {
+    .item {
+      &.video-item {
+        video {
+          margin: auto;
+          width: 100%;
+          background: #000;
+          display: block;
+        }
+
+        .loader {
+          .loader-text {
+            font-size: 12px;
+            position: absolute;
+            top: 50%;
+            margin-top: 30px;
+            left: 0;
+            text-align: center;
+            right: 0;
+            color: #ebebeb;
+          }
+
+          &.active:after {
+            width: 40px;
+            height: 40px;
+            margin-left: -20px;
+            margin-top: -20px;
+          }
+        }
+        .carousel-caption {
+          top: -100px;
+          background: rgba(0, 0, 0, 0.12);
+          left: 0;
+          right: 0;
+          bottom: initial;
+          padding: 0;
+          text-shadow: none;
+          text-align: left;
+          transition: all .2s;
+
+          .title {
+            display: block;
+            color: #fff;
+            padding: 15px;
+            font-size: 20px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+          }
+        }
+
+        .actions {
+          position: absolute;
+          bottom: -100px;
+          left: 0;
+          width: 100%;
+          right: 0;
+          padding: 10px 15px;
+          background: rgba(0, 0, 0, 0.12);
+          z-index: 2;
+          font-size: 16px;
+          transition: all .2s;
+
+          i {
+            text-shadow: 0 1px rgba(0,0,0,0.2);
+            cursor: pointer;
+            color: #fff;
+            display: inline-block;
+            margin-right: 10px;
+            text-align: left;
+
+            @include user-select();
+          }
+        }
+
+        &:hover {
+          .carousel-caption {
+            top: 0;
+          }
+          .actions {
+            bottom: 0;
+          }
+        }
+      }
+
+      &:not(.video-item) {
+        .carousel-caption {
+          left: 60px;
+          right: initial;
+          top: 50%;
+          transform: translateY(-50%);
+          text-align: left;
+          text-shadow: none;
+          max-width: 80%;
+          bottom: initial;
+          background: rgba(0,0,0,0.12);
+          padding: 30px;
+
+          .title {
+            font-weight: 300;
+            font-size: 25px;
+          }
+
+          .desc {
+            font-size: 14px;
+            text-transform: uppercase;
+
+            &:before {
+              content: '';
+              display: block;
+              width: 30px;
+              height: 2px;
+              background: #fff;
+              margin-top: 6px;
+              margin-bottom: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .carousel-control {
+    top: 50%;
+    bottom: initial;
+    margin-top: -30px;
+    background: rgba(0, 0, 0, 0.12);
+    width: 40px;
+    opacity: 1;
+    text-shadow: none;
+
+    i {
+      line-height: 60px;
+      font-size: 30px;
+      color: #fff;
+    }
+  }
+}
+
+@mixin media-slider-991-down {
+  .slider {
+    &:after {
+      bottom: -293px;
+
+      @include prefixer(transform, rotate(3.2deg), moz webkit spec o ms);
+    }
+  }
+}

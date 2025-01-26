@@ -1,0 +1,25 @@
+.level-0 {
+  font-size: 0;
+  margin: 0 -15px;
+
+  >li {
+    padding: 0 15px;
+    color: #868C91;
+    font-size: 15px;
+    display: inline-block;
+    vertical-align: top;
+    border-bottom: 0 !important;
+
+    >span, >a {
+      padding: 10px;
+      text-transform: none;
+      display: block;
+      text-decoration: none;
+      color: #70777c;
+
+      &:hover {
+        color: #000;
+      }
+    }
+  }
+}

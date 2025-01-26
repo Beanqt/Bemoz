@@ -1,0 +1,70 @@
+.selectLanguage {
+  &.page {
+    button {
+      min-width: 110px;
+      font-size: 12px;
+    }
+    .dropdown-menu {
+      font-size: 12px;
+    }
+  }
+
+  &.not {
+    button {
+      background: #d9534f;
+
+      i:before {
+        content: '\f071';
+      }
+    }
+  }
+
+  button {
+    background: #1d9c1b;
+    border: 0;
+    color: #fff;
+    border-radius: 3px;
+    padding: 3px 5px;
+    line-height: 15px;
+    font-size: 12px;
+    margin-top: 2px;
+    text-transform: uppercase;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .dropdown-menu {
+    margin-top: -2px;
+    background: #177d16;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    min-width: 100%;
+    padding: 0;
+    text-align: center;
+
+    @include prefixer(border-radius, 0, moz webkit spec);
+    @include prefixer(box-shadow, 0 1px 1px rgba(0,0,0,0.2), moz webkit spec);
+
+    > li > a {
+      padding: 2px 14px;
+      color: #fff;
+
+      &:hover, &:focus {
+        background: transparent;
+      }
+    }
+  }
+}
+.currentLanguage {
+  background: #337ab7;
+  border: 0;
+  color: #fff;
+  border-radius: 3px;
+  padding: 3px 5px;
+  line-height: 15px;
+  font-size: 12px;
+  margin-top: 2px;
+  text-transform: uppercase;
+}

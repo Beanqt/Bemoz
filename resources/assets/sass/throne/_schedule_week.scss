@@ -1,0 +1,93 @@
+.scheduleWeek {
+  margin: 0 0 15px;
+  padding: 0;
+  list-style: none;
+
+  > li {
+    padding-left: 90px;
+    position: relative;
+    border-bottom: 1px solid #e6e6e6;
+
+    > span {
+      position: absolute;
+      left: 15px;
+      top: 10px;
+    }
+
+    > ul {
+      font-size: 0;
+      padding: 0;
+      list-style: none;
+      margin: 0;
+      background: #f1f1f1;
+
+      &.schedule-times {
+        padding: 10px 0 4px;
+        background: transparent;
+
+        li {
+          position: relative;
+          width: 4.166666%;
+
+          &:last-child:after {
+            display: none;
+          }
+          &:first-child:before {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 1px;
+            height: 4px;
+            background: #e6e6e6;
+          }
+
+          &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: -4px;
+            right: 0;
+            width: 1px;
+            height: 4px;
+            background: #e6e6e6;
+          }
+        }
+      }
+
+      > li {
+        width: 2.083333%;
+        display: inline-block;
+        font-size: 12px;
+
+        &.schedule-time {
+          background: #f1f1f1;
+          height: 40px;
+          border-right: 1px solid #e6e6e6;
+
+          &.ui-selecting {
+            background: #e0e0e0;
+          }
+          &.selected {
+            background: #337ab7;
+          }
+          &:first-child {
+            border-left: 1px solid #e6e6e6;
+          }
+          &:last-child {
+            border-right: 0;
+          }
+        }
+      }
+    }
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+.ui-selectable-helper {
+  border: 1px solid #565656;
+}

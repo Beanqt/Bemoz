@@ -1,0 +1,8 @@
+@mixin OpenSans {
+  font-family: OpenSans, sans-serif;
+}
+
+@include font-face(OpenSans, Light, 300);
+@include font-face(OpenSans, Regular, 400);
+@include font-face(OpenSans, Semibold, 600);
+@include font-face(OpenSans, Bold, 700);

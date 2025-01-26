@@ -1,0 +1,31 @@
+.page-content {
+  color: #737373;
+  line-height: 22px;
+  font-size: 16px;
+
+  h1, h2, h3, h4 {
+    color: #242424;
+    text-transform: uppercase;
+  }
+  h2, h3, h4 {
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-top: 15px;
+  }
+
+  h1 {
+    font-size: 34px;
+    font-weight: 400;
+    margin-bottom: 14px;
+  }
+
+  h2 {
+    line-height: 26px;
+    font-size: 24px;
+  }
+
+  h3 {
+    line-height: 22px;
+    font-size: 20px;
+  }
+}

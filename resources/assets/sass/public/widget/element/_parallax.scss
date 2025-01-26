@@ -1,0 +1,31 @@
+.widgetBox.widgetParallax {
+  margin-top: 40px;
+  margin-bottom: 60px;
+  height: 500px;
+
+  .widgetParallaxInside {
+    height: 500px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    box-shadow: inset 0 8px 8px -8px rgba(0, 0, 0, 0.3), inset 0 -8px 8px -8px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: inset 0 8px 8px -8px rgba(0, 0, 0, 0.3), inset 0 -8px 8px -8px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: inset 0 8px 8px -8px rgba(0, 0, 0, 0.3), inset 0 -8px 8px -8px rgba(0, 0, 0, 0.3);
+
+    @include prefixer(background-size, cover !important, moz webkit spec);
+  }
+}
+
+@mixin media-widget-parallax-767-down {
+  .widgetBox.widgetParallax {
+    height: 250px !important;
+    margin-bottom: 40px;
+
+    .widgetParallaxInside {
+      height: 250px !important;
+      background-size: 810px !important;
+      background-repeat: no-repeat !important;
+      background-attachment: scroll !important;
+    }
+  }
+}

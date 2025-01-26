@@ -1,0 +1,1 @@
+<a href="{{$link}}" class="btn btn-button" {!! !empty($ga) ? "onclick=\"ga('send', 'event', 'button', 'click', '".$ga."')\"" : '' !!} {{$open=='new' ? 'target="_blank"' : ''}}>{{$text}}</a>

@@ -1,0 +1,16 @@
+.widgetBox.widgetSubscribe {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 0;
+
+  .newsletterTitle {
+    font-weight: 300;
+  }
+  .newsDesc {
+    font-weight: 300;
+  }
+
+  .newsForm {
+    margin-top: 20px;
+  }
+}

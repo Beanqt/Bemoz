@@ -1,0 +1,12 @@
+@media print {
+  header,
+  footer,
+  .widget,
+  .scroll-up,
+  .modal,
+  .breadcrumbs,
+  .btn
+  {
+    display: none;
+  }
+}

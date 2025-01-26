@@ -1,0 +1,59 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_URI} !^/\.
+    RewriteCond %{REQUEST_URI} !\.(webp|jpg|png|css|js|env|php|htm|html|shtml|gif|eot|woff2|woff|ttf|svg|doc|docx|xls|xlsx|csv|ppt|pptx|pdf|rar|zip|gif|ods|odt|mp3|mp4|txt|json|xml|gz|cgi|log|tmp|asp|aspx|yml|sql)$
+    RewriteRule ^ index.php [L]
+
+    ErrorDocument 404 "Page not found"
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header unset Server
+    Header unset X-Powered-By
+    Header unset X-CF-Powered-By
+    Header unset X-Mod-Pagespeed
+    Header unset X-Pingback
+    Header always set Content-Security-Policy "default-src https: 'unsafe-inline' 'unsafe-eval' wss:; img-src https: data:; upgrade-insecure-requests"
+    Header always set Referrer-Policy "same-origin"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    Header always set Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+
+    <FilesMatch "\.(ico|pdf|flv)$">
+        Header set Cache-Control "max-age=29030400, public"
+    </FilesMatch>
+
+    <FilesMatch "\.(webp|jpg|jpeg|png|gif|swf|eot|woff2|woff|ttf|svg|css|js)$">
+        Header set Cache-Control "max-age=31536000, public"
+    </FilesMatch>
+
+    <FilesMatch "\.(xml|txt)$">
+        Header set Cache-Control "max-age=604800, proxy-revalidate"
+    </FilesMatch>
+</IfModule>
+
+<FilesMatch "\.(.html?|txt|css|js|php|webp|jpg|jpeg|png|woff|woff2|svg|eot|ttf)$">
+    SetOutputFilter DEFLATE
+</FilesMatch>
+
+<FilesMatch ".user.ini|php.ini|error_log">
+    Require all denied
+</FilesMatch>

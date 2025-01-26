@@ -1,0 +1,236 @@
+.imageBox, .videoBox {
+  text-align: center;
+
+  .iconBox {
+    font-size: 100px;
+    background: #EBEBEB;
+    padding: 110px 0;
+    display: block;
+    color: #696969;
+
+    .noimage {
+      font-size: 13px;
+    }
+  }
+  a {
+    display: block;
+    text-decoration: none;
+    outline: none;
+  }
+
+  video {
+    display: block;
+  }
+
+  audio {
+    width: 100%;
+    display: block;
+    outline: none;
+  }
+
+  .gif {
+    width: 100%;
+  }
+}
+.embedBreadcrumb {
+  list-style: none;
+  padding: 2px 15px 5px;
+  margin: 0 0 15px;
+  text-align: left;
+  border-top: 1px solid #ebeeef;
+  border-bottom: 1px solid #ebeeef;
+
+  li {
+    list-style: none;
+    display: inline-block;
+    font-size: 12px;
+    vertical-align: middle;
+    margin-right: 2px;
+    cursor: pointer;
+
+    &:after {
+      content: '/';
+      display: inline-block;
+      margin-left: 2px;
+    }
+    &:last-child {
+      &:after {
+        display: none;
+      }
+    }
+    &.folder:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.documentCategory, .gallerySimple, .videoCategory {
+  .embedBox {
+    position: relative;
+  }
+
+  .elements {
+    margin: 0 -15px;
+
+    .item {
+      padding: 0 15px;
+      margin-bottom: 15px;
+
+      a {
+        display: block;
+        outline: none;
+      }
+
+      .icon-box {
+        font-size: 90px;
+        text-align: center;
+        background: #ebeeef;
+        color: #989fa2;
+        position: relative;
+      }
+
+      .image-box {
+        position: relative;
+        overflow: hidden;
+
+        img {
+          width: 100%;
+          height: auto;
+          left: 0;
+          top: 50%;
+          position: absolute;
+          transform: translateY(-50%);
+        }
+      }
+
+      .title {
+        margin-top: 12px;
+        color: #000;
+        font-weight: bold;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        line-height: 19px;
+        font-size: 14px;
+      }
+      .date {
+        border-top: 1px solid #ebeeef;
+        font-size: 12px;
+        margin-top: 5px;
+        color: #989fa2;
+        padding-top: 5px;
+
+        i, .icon {
+          font-size: 16px;
+          color: #afaead;
+          margin-right: 10px;
+
+          &.icon-album {
+            vertical-align: -3px;
+          }
+          &.icon-image {
+            vertical-align: -2px;
+          }
+        }
+      }
+
+      &.folder {
+        cursor: pointer;
+      }
+    }
+    .empty {
+      font-size: 14px;
+      margin: 0 30px;
+    }
+  }
+}
+
+.popup-youtube, .popup-vimeo, .popup-link, .image-popup, .popup-gallery .first-image, .popup-document, .popup-audio, .popup-html5 {
+  position: relative;
+  display: inline-block;
+
+  img {
+    width: 100%;
+  }
+
+  .gallery-overlay {
+    display: none;
+    visibility: hidden;
+    color: #fff;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+    @include prefixer(transition, all 0.2s ease, moz webkit spec);
+
+    i, .icon {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      font-size: 60px;
+
+      @include prefixer(transform, translate(-50%,-50%), moz webkit spec);
+    }
+  }
+  .inside-box {
+    position: relative;
+  }
+  &:hover {
+    .gallery-overlay {
+      display: block;
+      visibility: visible;
+      background-color: rgba(0,0,0,0.6);
+    }
+  }
+}
+
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@mixin media-embed-520-767 {
+  .documentCategory, .gallerySimple, .videoCategory {
+    .elements .item {
+      width: 50%;
+
+      .image-box img {
+        margin-left: 0;
+        min-width: 100%;
+      }
+    }
+  }
+}
+
+@mixin media-embed-520-down {
+  .documentCategory, .gallerySimple, .videoCategory {
+    .elements .item {
+      width: 100%;
+
+      .image-box img {
+        margin-left: 0;
+        min-width: 100%;
+      }
+    }
+  }
+  .gallerySimple .elements .item .image-box {
+    height: 240px;
+  }
+}

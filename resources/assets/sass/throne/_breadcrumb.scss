@@ -1,0 +1,31 @@
+.breadcrumbs {
+  padding: 0;
+  margin: 0 0 5px;
+  list-style: none;
+
+  li {
+    display: inline-block;
+    vertical-align: middle;
+
+    span, a {
+      color: #364150;
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    &:after {
+      content: '>';
+      display: inline-block;
+      margin-left: 4px;
+      color: #364150;
+      font-size: 12px;
+    }
+
+    &:last-child {
+      font-weight: bold;
+      &:after {
+        display: none;
+      }
+    }
+  }
+}

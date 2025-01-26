@@ -1,0 +1,42 @@
+.box {
+  padding: 20px;
+  margin: 0 0 20px;
+  background: #fff;
+
+  @include prefixer(box-shadow, 0 5px 65px rgba(76,64,38,0.2), moz webkit spec);
+
+  &.login-box {
+    .inline-cell {
+      padding: 0 30px;
+      vertical-align: top;
+
+      &:first-child {
+        border-right: 1px solid #d5d7d7;
+      }
+    }
+  }
+}
+.boxs {
+  .box-item {
+    margin-bottom: 30px;
+    display: block;
+    border: 1px solid #afafaf;
+    padding: 15px;
+
+    @include prefixer(transition, all .2s, moz webkit spec);
+
+    .box-title {
+      line-height: 16px;
+      min-height: 32px;
+      margin-top: 10px;
+    }
+    .box-icon {
+      font-size: 50px;
+      color: $default-color;
+    }
+
+    &:hover {
+      background: #fafafa;
+    }
+  }
+}

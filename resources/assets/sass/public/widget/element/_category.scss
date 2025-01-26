@@ -1,0 +1,128 @@
+.widgetBox.widgetCategory {
+  font-size: 0;
+  position: relative;
+  z-index: 1;
+
+  &.text-center {
+    .widgetImage {
+      img {
+        margin: 0 auto;
+      }
+    }
+  }
+
+  .widgetItemBox {
+    float: none;
+    font-size: 14px;
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: 69px;
+    max-width: 392px;
+  }
+  .widgetItem {
+    position: relative;
+    text-align: left;
+    overflow: hidden;
+
+    .infoBox {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      overflow: hidden;
+
+      .display-table {
+        display: table;
+        height: 100%;
+        width: 165px;
+        margin: auto;
+        z-index: 1;
+        position: relative;
+
+        .display-cell {
+          display: table-cell;
+          vertical-align: middle;
+          text-align: center;
+        }
+      }
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.33);
+      }
+    }
+    a {
+      display: block;
+      height: 100%;
+      text-decoration: none;
+
+      &:before {
+        content: '';
+        position: absolute;
+        border: 3px solid transparent;
+        top: 14%;
+        bottom: 14%;
+        left: 14%;
+        right: 14%;
+        @include prefixer(transition, all .3s ease-in-out, moz webkit spec o ms);
+      }
+      &:hover {
+        &:before {
+          top: 12px;
+          bottom: 12px;
+          left: 12px;
+          right: 12px;
+          border: 3px solid rgba(255,255,255,0.68);
+        }
+
+        .widgetTitle {
+          &:before, &:after {
+            background: rgba(255,255,255,0.5);
+          }
+        }
+      }
+    }
+    .widgetTitle {
+      padding: 12px 0;
+      color: #fff;
+      text-transform: uppercase;
+
+      h3 {
+        font-size: 20px;
+        line-height: 23px;
+        margin: 0;
+        font-weight: 400;
+      }
+
+      &:before, &:after {
+        content: '';
+        display: block;
+        width: 82px;
+        height: 3px;
+        margin-left: auto;
+        margin-right: auto;
+        background: rgba(255,255,255,0.2);
+
+        @include prefixer(transition, all .3s ease-in-out, moz webkit spec o ms);
+        @include prefixer(border-radius, 3px, moz webkit spec);
+      }
+      &:before {
+        margin-bottom: 13px;
+      }
+      &:after {
+        margin-top: 15px;
+      }
+    }
+  }
+}
+
+@mixin media-widget-category-520-down {
+  .widgetBox.widgetCategory .widgetItemBox {
+    width: 100%;
+  }
+}

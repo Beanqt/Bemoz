@@ -1,0 +1,24 @@
+.mapBox {
+  position: relative;
+  margin-bottom: 15px;
+
+
+  .actions {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    background: rgba(54, 65, 80, 0.92);
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    padding: 3px;
+
+    @include prefixer(border-radius, 3px 3px 0 0, moz webkit spec);
+  }
+  #map {
+    height: 400px;
+    width: 100%;
+    @include prefixer(box-shadow, 0 1px 1px rgba(0,0,0,0.2), moz webkit spec);
+    @include prefixer(border-radius, 3px, moz webkit spec);
+  }
+}

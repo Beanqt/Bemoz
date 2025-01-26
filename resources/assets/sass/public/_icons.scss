@@ -1,0 +1,34 @@
+@font-face {
+  font-family: "Hinora";
+  src: url('#{$url}HinoraIcons/Hinora.eot');
+  src: url('#{$url}HinoraIcons/Hinora.eot?#iefix') format('eot'),
+    url('#{$url}HinoraIcons/Hinora.woff2') format('woff2'),
+    url('#{$url}HinoraIcons/Hinora.woff') format('woff'),
+    url('#{$url}HinoraIcons/Hinora.ttf') format('truetype'),
+    url('#{$url}HinoraIcons/Hinora.svg#Hinora') format('svg');
+  font-display: swap;
+}
+
+.icon {
+  font-family: "Hinora";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  text-decoration: none;
+  text-transform: none;
+  line-height: 1;
+}
+
+.icon-breadcrumbs:before {
+  content: "\E001";
+}
+
+.icon-facebook:before {
+  content: "\E002";
+}
+
+.icon-twitter:before {
+  content: "\E003";
+}

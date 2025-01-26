@@ -1,0 +1,58 @@
+.level-1 {
+  margin: 0;
+  padding: 0 14px 15px 12px;
+  list-style: none;
+
+  >li {
+    >a , >span {
+      font-size: 17px;
+      font-weight: 400;
+      color: #fff;
+      border-bottom: 1px solid #84c3dd;
+      padding: 4px 2px 4px 0;
+      display: block;
+    }
+
+    &:last-child {
+      >a , >span {
+        border-bottom: 0;
+        padding: 7px 0 6px 0;
+      }
+    }
+
+    &.lot-submenu {
+      position: static;
+
+      >span {
+        position: relative;
+      }
+
+      >.inside {
+        padding: 0 0 0 0 !important;
+      }
+    }
+
+    &.dropdown {
+      cursor: pointer;
+
+      &.active {
+        >span {
+          color: #000;
+        }
+
+        >.inside {
+          margin: 0;
+          padding: 0 0 0 14px;
+          display: block;
+          top: 0;
+          left: 100%;
+          min-width: initial;
+          background: transparent;
+          @include prefixer(box-shadow, none, moz webkit spec);
+          @include prefixer(border-radius, 0, moz webkit spec);
+          border: 0;
+        }
+      }
+    }
+  }
+}

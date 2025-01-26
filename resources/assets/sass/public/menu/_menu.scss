@@ -1,0 +1,340 @@
+.hambibox {
+  display: inline-block;
+  vertical-align: middle;
+
+  .navbar-toggle {
+    margin: 0;
+    padding: 11px 7px;
+
+    .icon-bar {
+      background: #55acd0;
+    }
+  }
+
+  &.side-hambibox {
+    display: block;
+    text-align: left;
+    background: #55acd0;
+
+    .navbar-toggle {
+      float: none;
+
+      .text {
+        position: absolute;
+        left: 42px;
+        top: 8px;
+        color: #fff;
+      }
+    }
+    .navbar-toggle .icon-bar {
+      background: #fff;
+    }
+  }
+}
+
+
+#sideMenu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  .mobil-dropdown {
+    display: none;
+  }
+
+  .arrow-right {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-top: -5px;
+    width: 10px;
+    height: 10px;
+    background: transparent;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    transform: rotate(-45deg);
+  }
+
+  @import 'left/level_0';
+  @import 'left/level_1';
+  @import 'left/level_2';
+}
+
+.simple-menu {
+  list-style: none;
+  padding: 0 !important;
+
+  li {
+    >a, >span {
+      padding: 10px 20px;
+      color: #858b8f;
+      display: block;
+      font-weight: 500;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    &.active {
+      background: $default-color;
+
+      >a, >span {
+        color: #fff;
+      }
+    }
+  }
+}
+
+.menu {
+  position: relative;
+  background: #ddd;
+
+  .menu-close {
+    display: none;
+  }
+
+  .mobil-dropdown {
+    display: none;
+  }
+
+  @import 'main/level_0';
+  @import 'main/level_1';
+  @import 'main/level_2';
+}
+
+.footermenu {
+  @import 'footer/level_0';
+}
+
+@mixin media-menu-991-down {
+  .hambibox .navbar-toggle {
+    display: block;
+  }
+
+  .menu {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    background: rgb(209, 209, 209);
+    z-index: 40;
+    transition: all .2s;
+    right: -50%;
+    width: 50%;
+    overflow: auto;
+    margin-top: 0;
+    padding-top: 50px;
+
+    &.open {
+      right: 0;
+
+      .menu-close {
+        display: inline-block;
+        position: absolute;
+        right: 31px;
+        top: -28px;
+        color: #fff;
+        font-size: 20px;
+      }
+    }
+
+    .mobil-dropdown {
+      display: block;
+      position: absolute;
+      right: 15px;
+      top:  8px;
+      font-size: 16px;
+      color: #55acd0;
+      border: 1px solid #55acd0;
+      padding: 5px 8px;
+      z-index: 10;
+      cursor: pointer;
+    }
+
+    nav {
+      width: 100%;
+      border: 0;
+
+      .dropdown.open {
+        .mobil-dropdown {
+          transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+          display: block !important;
+
+          .inside {
+            padding: 10px 7px;
+          }
+        }
+      }
+
+      #menu {
+        display: block !important;
+        margin: 0;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        @include prefixer(box-shadow, none !important, moz webkit spec);
+
+        &.collapse {
+          display: none !important;
+        }
+        &.navbar-collapse.in {
+          display: block !important;
+        }
+
+        >li {
+          border-bottom: 1px solid rgba(255,255,255,0.5);
+
+          >a, >span {
+            display: block;
+            padding: 15px;
+            color: #fff;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(255, 255, 255, .5);
+            text-transform: none;
+            letter-spacing: 0;
+            font-size: 14px;
+          }
+
+          &:last-child {
+            border-bottom: 0;
+          }
+        }
+      }
+      .dropdown .dropdown-menu {
+        position: static;
+        display: none;
+        padding: 0;
+        float: none;
+        visibility: visible;
+        opacity: 1;
+
+        .inside {
+          &:before {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .level-0 {
+      margin: 50px 0 0 0;
+      padding: 0 30px;
+
+      &:before {
+        display: none;
+        border-top: none;
+      }
+
+      >li {
+        display: block;
+        text-align: left;
+
+        >a , >span {
+          display: block;
+          padding: 15px;
+          color: #fff;
+          border-bottom: 1px solid rgba(255, 255, 255, .5);
+        }
+
+        &.dropdown {
+          position: relative;
+
+          &.open {
+            .mobil-dropdown {
+              transform: rotate(180deg);
+            }
+
+            .dropdown-menu {
+              visibility: visible;
+              opacity: 1;
+              display: block;
+              position: static;
+            }
+          }
+
+          .dropdown-menu {
+            visibility: hidden;
+            opacity: 0;
+            float: none;
+            transition: initial;
+
+            .inside {
+              background: transparent;
+              box-shadow: none;
+              padding: 10px 15px;
+
+              >ul li {
+                border-bottom: 1px solid rgba(255,255,255,0.5);
+
+                &:last-child {
+                  border-bottom: 0;
+                }
+              }
+
+              &:before {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .level-1 {
+      li {
+        >a, >span {
+          padding: 10px 6px !important;
+          font-weight: 400 !important;
+          color: #fff !important;
+        }
+      }
+    }
+  }
+
+  #sideMenu {
+    &.collapse {
+      display: none !important;
+    }
+    &.navbar-collapse.in {
+      display: block !important;
+    }
+
+    .arrow-right {
+      top: 15px;
+      right: 5px;
+      transform: rotate(45deg);
+    }
+
+    .level-1>li {
+      &.dropdown.active>.inside {
+        position: relative;
+        left: 0;
+        float: none;
+      }
+
+      &.lot-submenu>.inside {
+        padding: 0 0 0 14px !important;
+      }
+    }
+
+    .level-2 {
+      padding: 0 28px 15px 0;
+
+      >li.dropdown.active>.inside {
+        position: relative;
+        float: none;
+        left: 0;
+      }
+    }
+  }
+}
+
+@mixin media-menu-767-down {
+  .menu {
+    width: 100%;
+    right: -100%;
+
+    .open {
+      right: 0;
+    }
+  }
+}

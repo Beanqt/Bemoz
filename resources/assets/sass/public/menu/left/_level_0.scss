@@ -1,0 +1,74 @@
+&.level-0 {
+  >li {
+    font-size: 22px;
+    font-weight: 600;
+    display: block;
+    padding: 0 0 0 16px;
+
+    @include user-select();
+
+    >span, >a {
+      display: block;
+      text-decoration: none;
+      color: #020202;
+      letter-spacing: 0.5px;
+      padding: 14px 0;
+      border-bottom: 1px solid #afafaf;
+      position: relative;
+      cursor: pointer;
+
+      .icon-plus {
+        position: absolute;
+        top: 50%;
+        right: 5px;
+        margin-top: -12px;
+      }
+    }
+
+    &:first-child {
+      border-left: 0;
+
+      >span , > a {
+        padding-left: 0;
+      }
+    }
+
+    &:last-child {
+      >span , >a {
+        padding-right: 0;
+      }
+    }
+
+    &:hover, &.active {
+      background: #55acd0;
+      margin-bottom: 1px;
+
+      >a, >span {
+        color: #fff;
+        border-bottom: 0;
+
+        .icon-plus {
+          background: url('/images/icons/plus_white.png');
+        }
+      }
+    }
+
+    &.active {
+      margin-bottom: 4px;
+
+      >.dropdown-menu {
+        display: block;
+        position: static;
+        background: #55acd0;
+        float: none;
+        min-width: initial;
+        margin: 0;
+        padding: 0;
+        border: none;
+
+        @include prefixer(box-shadow, none, moz webkit spec);
+        @include prefixer(border-radius, 0, moz webkit spec);
+      }
+    }
+  }
+}

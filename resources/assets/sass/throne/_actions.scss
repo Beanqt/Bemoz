@@ -1,0 +1,21 @@
+.actions {
+  display: inline-block;
+  vertical-align: middle;
+  .action-item {
+    display: inline-block;
+    vertical-align: top;
+
+    a, button {
+      display: block;
+    }
+  }
+}
+
+.page-header .actions {
+  float: right;
+
+  .btn-icon i {
+    padding: 4px 6px;
+    margin-right: 4px;
+  }
+}

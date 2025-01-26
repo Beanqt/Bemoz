@@ -1,0 +1,65 @@
+.level-2 {
+  background: #55acd0;
+  list-style: none;
+  padding: 0 28px 15px 28px;
+  margin: 0;
+  min-width: 295px;
+
+  >li {
+    >a , >span {
+      font-size: 17px;
+      font-weight: 400;
+      color: #fff;
+      border-bottom: 1px solid #84c3dd;
+      padding: 4px 0 4px 0;
+      display: block;
+    }
+
+    &:last-child {
+      >a , >span {
+        border-bottom: 0;
+        padding: 7px 0 6px 0;
+      }
+    }
+
+    &:first-child {
+      >a , >span {
+        padding: 14px 0 6px 0;
+      }
+    }
+
+    &:hover {
+      >a , >span {
+        color: #000;
+      }
+    }
+
+    &.dropdown {
+      cursor: pointer;
+      
+      &.active {
+        >span {
+          color: #000;
+        }
+
+        >.inside {
+          margin: 0;
+          padding: 0 0 0 28px;
+          display: block;
+          top: 0;
+          left: 100%;
+          min-width: initial;
+          background: transparent;
+          @include prefixer(box-shadow, none, moz webkit spec);
+          @include prefixer(border-radius, 0, moz webkit spec);
+          border: 0;
+        }
+      }
+    }
+  }
+
+  &.dropdown-menu {
+    @include prefixer(box-shadow, none, moz webkit spec);
+    @include prefixer(border-radius, 0, moz webkit spec);
+  }
+}

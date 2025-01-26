@@ -1,0 +1,192 @@
+.widget-box {
+  background: #364150;
+  padding: 15px 15px 3px;
+  margin-bottom: 15px;
+  position: relative;
+
+  @include prefixer(box-shadow, 0 1px 1px rgba(0,0,0,0.2), moz webkit spec);
+  @include prefixer(border-radius, 3px, moz webkit spec);
+
+  > .loader.active:after {
+    margin-left: -3em;
+    margin-top: -3em;
+    width: 6em;
+    height: 6em;
+  }
+
+  label {
+    color: #fff;
+  }
+
+  .shortcodes-table {
+    padding: 0;
+    list-style: none;
+
+    li {
+      background: #1ca8dd;
+      border-radius: 3px;
+      color: #fff;
+      padding: 10px;
+      margin-bottom: 10px;
+
+      &.info {
+        display: none;
+        background: #f0ad4e;
+      }
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  .box, .box label {
+    color: #333;
+  }
+
+  .input-group.refresh {
+    .input-group-addon {
+      cursor: pointer;
+    }
+    .chosen-single {
+      @include prefixer(border-radius, 0 4px 4px 0, moz webkit spec);
+    }
+
+    &.load {
+      position: relative;
+
+      i {
+        -webkit-animation: fa-spin 2s infinite linear;
+        animation: fa-spin 2s infinite linear;
+      }
+      &:after {
+        content: '';
+        display: block;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        position: absolute;
+        background: rgba(54, 65, 80, 0.53);
+      }
+    }
+  }
+}
+.widgetItem {
+  margin-bottom: 20px;
+  padding: 0;
+  border-radius: 2px;
+  position: relative;
+  background: #fff;
+
+  .title {
+    padding: 10px 15px 10px 40px;
+    font-weight: 600;
+  }
+
+  .widgetItemAction {
+    position: absolute;
+    left: -20px;
+    top: -1px;
+    z-index: 1;
+
+    .widgetItemActionBtn {
+      display: block;
+      padding: 2px 5px;
+      margin-bottom: 4px;
+      cursor: pointer;
+      width: 20px;
+      font-size: 12px;
+      color: #fff;
+      @include prefixer(border-radius, 6px 0 0 6px, moz webkit spec);
+
+      &.widgetMove {
+        background: #5cb85c;
+      }
+      &.widgetDelete {
+        background: #d9534f;
+      }
+      &.widgetEdit {
+        background: #f0ad4e;
+      }
+    }
+  }
+
+  .inside {
+    display: none;
+    border-top: 1px solid #e2e2e2;
+    padding: 15px;
+    position: relative;
+  }
+
+  &.ui-sortable-placeholder {
+    visibility: visible !important;
+    opacity: .6;
+    background: #f2fbff;
+  }
+
+  &:not(.dynamic-element-grid).inactive {
+    &:after {
+      content: '';
+      display: block;
+      background: rgba(255, 255, 255, 0.6);
+      z-index: 1;
+      @include position(absolute, 0 0 0 0);
+    }
+  }
+
+  &.open {
+    >.inside {
+      display: block;
+    }
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.widget-sortable {
+  .widgetItem {
+    > .widgetItemAction {
+      .widgetItemActionBtn {
+        &.widgetMove {
+          display: block;
+        }
+        &.widgetDelete, &.widgetClose {
+          display: none;
+        }
+      }
+    }
+
+    >.inside {
+      height: 0;
+      overflow: hidden;
+    }
+  }
+  .dd-placeholder {
+    height: 52px !important;
+    margin-bottom: 20px;
+    margin-top: 0;
+  }
+  .dd-placeholder:last-child {
+    margin-bottom: 0;
+  }
+}
+.dd-dragel {
+  .widgetItemAction {
+    left: -20px;
+    right: initial;
+    top: -1px;
+
+    .widgetItemActionBtn {
+      @include prefixer(border-radius, 6px 0 0 6px, moz webkit spec);
+
+      &.widgetMove {
+        background: #5cb85c;
+        color: #fff;
+      }
+      &.widgetDelete {
+        display: none;
+      }
+    }
+  }
+}
+

@@ -1,0 +1,46 @@
+.modal-header .close {
+  font-size: 24px;
+  outline: none;
+}
+.modal-widget-manager {
+  > .modal-dialog {
+    width: 100%;
+    max-width: 1140px;
+  }
+  .modal-body {
+    min-height: 130px;
+  }
+}
+
+.modal-manager {
+  &.modal-bg {
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .modal-header {
+    background: #364150;
+    color: #fff;
+
+    .close {
+      margin-top: 0;
+      color: #fff;
+      opacity: 1;
+      outline: none;
+    }
+  }
+  .modal-body {
+    .box {
+      margin-bottom: 0;
+      padding: 0;
+
+      @include prefixer(box-shadow, none, moz webkit spec);
+    }
+
+    form > .actions {
+      border-top: 1px solid #ccc;
+      display: block;
+      margin: 0 -15px;
+      padding: 15px 15px 0;
+    }
+  }
+}

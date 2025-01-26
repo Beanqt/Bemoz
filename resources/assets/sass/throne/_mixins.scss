@@ -1,0 +1,123 @@
+//Background images
+@mixin background-image-url($color, $file-name, $position: center top, $repeat: no-repeat) {
+  background: $color url('/images/#{$file-name}') $position $repeat;
+}
+
+//Retina images
+@mixin retina($file-name, $size) {
+  $db: 0;
+  @each $item in $size {
+    @if $db == 0 {
+      width: $item;
+    }
+    @if $db == 1 {
+      height: $item;
+    }
+    $db: $db+1;
+  }
+  background-image: url('/images/#{$file-name}.png');
+}
+//Retina 2x images
+@mixin retina2x($file-name, $size) {
+  background-image: url('/images/#{$file-name}_2x.png');
+  background-size: $size;
+}
+
+//Placeholder style
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+  &:-moz-placeholder           {@content}
+  &::-moz-placeholder          {@content}
+  &:-ms-input-placeholder      {@content}
+}
+
+//Cleafix
+@mixin clearfix() {
+  &::after {
+    clear: both;
+    content: "";
+    display: table;
+  }
+}
+
+//User select
+@mixin user-select() {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+//Prefix
+@mixin prefixer ($property, $value, $prefixes) {
+  @each $prefix in $prefixes {
+    @if $prefix == webkit {
+      -webkit-#{$property}: $value;
+    }
+    @else if $prefix == moz {
+      -moz-#{$property}: $value;
+    }
+    @else if $prefix == ms {
+      -ms-#{$property}: $value;
+    }
+    @else if $prefix == o {
+      -o-#{$property}: $value;
+    }
+    @else if $prefix == spec {
+      #{$property}: $value;
+    }
+    @else  {
+      @warn "Hiba: #{$prefix}";
+    }
+  }
+}
+
+@mixin position($position, $values)
+{
+  $side : 0;
+
+  position: $position;
+  @each $item in $values {
+    @if $item != null {
+      @if $side == 0{
+        top: $item;
+      }
+      @if $side == 1{
+        right: $item;
+      }
+      @if $side == 2{
+        bottom: $item;
+      }
+      @if $side == 3{
+        left: $item;
+      }
+    }
+
+    $side : $side+1;
+  }
+}
+
+@mixin font-face($family, $file, $weight, $style : normal) {
+  @font-face {
+    font-family: $family;
+    src: url('#{$url}#{$family}/#{$family}-#{$file}.eot');
+    src: url('#{$url}#{$family}/#{$family}-#{$file}.woff2') format('woff2'),
+    url('#{$url}#{$family}/#{$family}-#{$file}.woff') format('woff'),
+    url('#{$url}#{$family}/#{$family}-#{$file}.ttf') format('truetype'),
+    url('#{$url}#{$family}/#{$family}-#{$file}.svg##{$file}') format('svg'),
+    url('#{$url}#{$family}/#{$family}-#{$file}.eot?#iefix') format('embedded-opentype');
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+
+@mixin range-thumb {
+  &::-webkit-slider-thumb {@content}
+  &::-moz-range-thumb     {@content}
+  &::-ms-thumb            {@content}
+}
+@mixin range-track {
+  &::-webkit-slider-runnable-track {@content}
+  &::-moz-range-track     {@content}
+  &::-ms-track            {@content}
+}

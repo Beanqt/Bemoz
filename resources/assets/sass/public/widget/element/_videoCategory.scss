@@ -1,0 +1,27 @@
+.videoCategory {
+  .embedBox {
+    min-height: 276px;
+  }
+  
+  .elements {
+    .item {
+      width: 25%;
+
+      .icon-box {
+        height: 140px;
+        line-height: 140px;
+      }
+
+      .image-box {
+        height: 140px;
+      }
+    }
+  }
+}
+
+.popup-youtube, .popup-vimeo {
+  .gallery-overlay {
+    display: block !important;
+    visibility: visible !important;
+  }
+}

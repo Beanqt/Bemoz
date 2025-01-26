@@ -1,0 +1,100 @@
+.menu {
+  position: fixed;
+  top: 55px;
+  bottom: 0;
+  left: 0;
+  background: #364150;
+  z-index: 9;
+  padding: 0;
+  width: 40px;
+  white-space: nowrap;
+  overflow: hidden;
+
+  @include prefixer(transition, all .2s linear, spec webkit);
+  @include prefixer(box-shadow, 0 0 2px rgba(0,0,0,0.7), moz webkit spec);
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    > li {
+      border-bottom: 1px solid rgba(30, 37, 47, 0.27);
+
+      >a, >span {
+        padding: 8px 10px;
+        display: block;
+        color: #fff;
+        text-decoration: none;
+        cursor: pointer;
+
+        i {
+          margin-right: 11px;
+          font-size: 12px;
+          margin-left: 3px;
+        }
+
+        span {
+          position: absolute;
+          right: 9px;
+          top: 11px;
+          opacity: 0;
+          @include prefixer(transition, all 0.2s linear, webkit spec);
+
+          &:before {
+            content: '\f0d7';
+          }
+        }
+      }
+
+      &.active {
+        background: #1e252f;
+
+        >a, >span {
+          span:before {
+            content: '\f0d8';
+          }
+        }
+        ul {
+          display: block;
+        }
+      }
+
+      ul {
+        display: none;
+        padding-left: 32px;
+        background: rgba(0, 0, 0, 0.16);
+
+        li {
+          background: transparent !important;
+        }
+      }
+    }
+  }
+
+  &:hover {
+    width: 220px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 9px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: #e4e4e4;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #cccccc;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #cccccc;
+    }
+
+    ul > li {
+      >a, >span {
+        span {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

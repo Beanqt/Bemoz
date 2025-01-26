@@ -1,0 +1,37 @@
+.opening-info {
+  margin: 0 0 10px 0;
+  padding: 0;
+  list-style: none;
+
+  &.streets {
+    margin-top: 10px;
+  }
+
+  ul {
+    padding: 0;
+    list-style: none;
+  }
+}
+
+.opening-box {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  .opening-title {
+    font-size: 20px;
+    font-style: italic;
+    font-weight: bold;
+    text-shadow: 0 0 24px rgba(1,1,1,.21);
+  }
+  .opening-hours {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 20px;
+  }
+
+  > li {
+    margin-bottom: 10px;
+  }
+}

@@ -1,0 +1,359 @@
+@import 'custom_select';
+
+.form-box {
+  .headline {
+    border: none;
+  }
+
+  h2 {
+    padding-top: 8px;
+    padding-bottom: 10px;
+    line-height: 30px;
+    font-size: 24px;
+    text-transform: uppercase;
+    color: #df5e5b;
+    border-top: 1px solid #cdcdd0;
+    border-bottom: 1px solid #cdcdd0;
+    margin-top: 0;
+    margin-bottom: 14px;
+  }
+
+  h3 {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 14px;
+    color: #3c3f49;
+    margin-top: 5px;
+    margin-bottom: 20px;
+
+    span {
+      display: inline-block;
+      padding-top: 4px;
+      width: 27px;
+      height: 27px;
+      font-weight: 700;
+      text-align: center;
+      font-size: 14px;
+      margin-right: 8px;
+      color: #020202;
+      border: 2px solid #b7b8be;
+
+      @include prefixer(border-radius, 50%, moz webkit spec);
+    }
+  }
+}
+
+.customSelect ul li.disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.customSelect:not(.multi-select) .current-selected {
+  padding: 10px 28px 10px 12px;
+}
+
+.customSelect.multi-select .current-selected {
+  padding: 10px 12px
+}
+
+.checkBoxInput {
+  position: relative;
+  margin-bottom: 0;
+  padding-left: 23px;
+  font-weight: 700;
+  color: #000;
+  margin-right: 10px;
+
+  @include user-select();
+
+  &.radioBox {
+    span:not(.not-check) {
+      border: 1px solid rgba(1,1,1,.5);
+      background: rgba(0,0,0,.05);
+      border-radius: 50%;
+      box-shadow: inset 0 3px 1px -1px rgba(1,1,1,.17);
+    }
+    input:checked + span:not(.not-check) {
+      background: #ba8d63;
+      border: 0;
+      box-shadow: inset 0 3px 1px -1px rgba(1,1,1,.17), 0 1px 0 rgba(255,255,255,.61);
+
+      &:before {
+        display: none;
+      }
+    }
+  }
+
+  &.clear {
+    font-weight: 400;
+    text-transform: none;
+  }
+
+  &.block {
+    display: block;
+  }
+
+  &.margin-bottom {
+    margin-bottom: 20px;
+  }
+
+  input {
+    visibility: hidden;
+    position: absolute;
+
+    &:checked + span:not(.not-check):before {
+      content: '';
+      display: inline-block;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 10px;
+      height: 10px;
+      background: #e25b53;
+      margin-left: 0;
+      cursor: pointer;
+      border: none;
+    }
+  }
+
+  span:not(.not-check) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    border: 2px solid #b7b8be;
+    font-weight: 900;
+
+    @include prefixer(border-radius, 2px, moz webkit spec);
+  }
+
+  p {
+    display: inline-block;
+    margin: 0;
+  }
+  a {
+    text-decoration: underline;
+    color: #4e5055;
+  }
+}
+
+.customFileBox {
+  width: 1px;
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+
+  &+label {
+    background: #cdcdd0;
+    width: 140px;
+    height: 40px;
+    max-width: 200px;
+    color: #4e5055;
+    font-size: 14px;
+    text-align: center;
+    line-height: 14px;
+    padding-top: 14px;
+    cursor: pointer;
+    overflow: hidden;
+    text-transform: none;
+
+    span, .fa {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .fa {
+      background: rgba(0,0,0,0.2);
+      font-size: 16px;
+      padding: 8px 10px;
+    }
+    span {
+      padding: 10px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 163px;
+    }
+
+    &:hover {
+      background: #cdcdd0;
+    }
+  }
+}
+
+.form-group {
+  margin-bottom: 24px;
+
+  .with-errors {
+    display: none;
+  }
+  &.has-error {
+    .with-errors {
+      display: block;
+    }
+  }
+  &.no-margin {
+    margin: 0;
+  }
+  &.small-form-group {
+    margin-bottom: 11px;
+  }
+}
+
+label {
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #a4a5ad;
+}
+
+.form-control {
+  border: 1px solid #cdcdd0;
+  background: #f6f7f8;
+  font-weight: 600;
+  color: #020202;
+  height: 40px;
+  outline: none;
+  @include prefixer(border-radius, initial, moz webkit spec);
+  @include prefixer(box-shadow, none !important, moz webkit spec);
+
+  &:focus {
+    border-color: #e5e5e5;
+  }
+
+  &.no-resize {
+    resize: none;
+  }
+}
+
+.help-block {
+  font-size: 14px;
+  line-height: 16px;
+}
+.chosen-container-multi .chosen-choices li.search-choice {
+  background-color: #a0a0a0;
+}
+
+.select-group {
+  .input-group-addon {
+    background: transparent;
+    border: 0;
+    padding: 0 0 0 20px;
+
+    i {
+      background: #93c3cc;
+      padding: 10px 12px;
+      color: #fff;
+      cursor: pointer;
+
+      @include prefixer(border-radius, 6px, webkit spec moz);
+    }
+  }
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+  vertical-align: middle;
+
+  input {
+    display:none;
+
+    &:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    &:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    &:checked + .slider:before {
+      -webkit-transform: translateX(16px);
+      -ms-transform: translateX(16px);
+      transform: translateX(16px);
+    }
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 3px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    &.round {
+      border-radius: 34px;
+      &:before {
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+.range {
+  -webkit-appearance: none;
+  background: transparent;
+  margin-top: 9px;
+
+  @include range-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 18px;
+    width: 18px;
+    background: #000;
+    margin-top: -7px;
+
+    @include prefixer(border-radius, 50%, moz webkit spec);
+  }
+  @include range-track {
+    width: 300px;
+    height: 5px;
+    background: rgba(1,1,1,0.25);
+    border: none;
+
+    @include prefixer(border-radius, 3px, moz webkit spec);
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+.range-box {
+  font-size: 0;
+
+  .range {
+    position: relative;
+    z-index: 1;
+  }
+
+  .range-min, .range-max {
+    display: inline-block;
+    width: 50%;
+    font-size: 16px;
+    margin-top: 10px;
+    color: #000;
+  }
+  .range-min {
+    text-align: left;
+  }
+  .range-max {
+    text-align: right;
+  }
+}

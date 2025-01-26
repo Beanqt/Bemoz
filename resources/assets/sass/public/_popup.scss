@@ -1,0 +1,109 @@
+.custom-popup {
+  background: rgba(0,0,0,.92);
+  text-align: center;
+  z-index: 8;
+  cursor: zoom-out;
+
+  @include position(fixed, 0 0 0 0);
+
+  .custom-popup-inside {
+    display: inline-block;
+    margin-top: 5vh;
+    position: relative;
+    cursor: default;
+    max-height: 90vh;
+
+    @include user-select();
+
+    .custom-popup-close {
+      position: absolute;
+      top: -17px;
+      right: 0;
+      color: rgba(255, 255, 255, 0.77);
+      cursor: pointer;
+    }
+    img {
+      width: auto;
+      max-width: 100%;
+      max-height: 88vh;
+      border-radius: 3px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.8);
+    }
+    .custom-popup-action {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      font-size: 35px;
+      color: #fff;
+      width: 14%;
+      opacity: 0;
+      cursor: pointer;
+
+      i {
+        position: absolute;
+        top: 50%;
+        margin-top: -17px;
+      }
+
+      &.custom-popup-prev {
+        left: 0;
+        background: -moz-linear-gradient(left, rgba(0,0,0,0.3) 0%, rgba(255,255,255,0) 100%);
+        background: -webkit-linear-gradient(left, rgba(0,0,0,0.3) 0%,rgba(255,255,255,0) 100%);
+        background: linear-gradient(to right, rgba(0,0,0,0.3) 0%,rgba(255,255,255,0) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d000000', endColorstr='#00ffffff',GradientType=1 );
+
+        i {
+          left: 40%;
+        }
+      }
+      &.custom-popup-next {
+        right: -1px;
+        background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(0,0,0,0.3) 100%);
+        background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(0,0,0,0.3) 100%);
+        background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(0,0,0,0.3) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#4d000000',GradientType=1 );
+
+        i {
+          right: 40%;
+        }
+      }
+      &:hover {
+        opacity: 1;
+      }
+    }
+    .custom-info {
+      text-align: left;
+      color: #fff;
+      margin-top: 6px;
+      font-size: 12px;
+      position: absolute;
+      width: 100%;
+
+      .number {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+    }
+    .custom-iframe-box {
+      width: 80vw;
+      height: 90vh;
+
+      iframe {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        box-shadow: 0 0 8px rgba(0,0,0,.6);
+        background: #000;
+      }
+    }
+    video {
+      height: 90vh;
+      max-height: 90vh;
+      outline: none;
+    }
+  }
+}

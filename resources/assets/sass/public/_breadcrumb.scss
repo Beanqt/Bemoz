@@ -1,0 +1,49 @@
+.breadcrumbs {
+  position: relative;
+  font-size: 13px;
+
+  &.no-border:after {
+    display: none;
+  }
+
+  ul {
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: inline-block;
+      padding: 0 6px 0 0;
+      color: #515151;
+
+      a, span {
+        color: #515151;
+        text-decoration: none;
+        font-style: italic;
+      }
+      &:after {
+        content: '|';
+        display: inline-block;
+        margin-left: 6px;
+      }
+
+      &:last-child {
+        padding-right: 0;
+        position: relative;
+
+        &:before {
+          content: '';
+          display: block;
+          height: 1px;
+          background: #515151;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+        }
+        &:after {
+          display: none;
+        }
+      }
+    }
+  }
+}

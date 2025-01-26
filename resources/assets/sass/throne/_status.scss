@@ -1,0 +1,47 @@
+.status-box {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 19px;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: .4s;
+  border-radius: 20px;
+  background: #D9534F;
+
+  @include user-select();
+
+  .point {
+    position: absolute;
+    content: "";
+    height: 15px;
+    width: 15px;
+    left: 22px;
+    bottom: 2px;
+    background: #fff;
+    transition: .4s;
+    border-radius: 50%;
+  }
+
+  &.status-active {
+    background: #5CB85C;
+
+    .point {
+      left: 4px;
+    }
+  }
+}
+
+
+.featuredBox {
+  background: #ddd;
+  color: #b5b5b5;
+  opacity: 0.8;
+  font-size: 9px;
+
+  &.status-active {
+    background: #f0ad4e;
+    color: #ffee00;
+    opacity: 1;
+  }
+}

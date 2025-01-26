@@ -1,0 +1,32 @@
+.addthis {
+  color: #fff;
+  font-size: 11px;
+  margin-top: -15px;
+  margin-bottom: 9px;
+
+  span {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    text-align: center;
+    padding-top: 5px;
+    cursor: pointer;
+    margin-right: 2px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .facebook {
+    background: #3b5997;
+  }
+
+  .twitter {
+    background: #1ea1f2;
+  }
+
+  .google {
+    background: #ff6450;
+  }
+}

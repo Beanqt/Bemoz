@@ -1,0 +1,89 @@
+.helpMask {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 40;
+  display: none;
+}
+.helpFixedMask{
+  z-index: 41;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background: rgba(0,0,0,.6);
+    z-index: 20;
+  }
+}
+.helpBox {
+  display: none;
+}
+.helpMessage {
+  display: none;
+  position: absolute;
+  z-index: 22;
+  width: 400px;
+  background: rgb(255, 255, 255);
+  padding: 15px;
+  border-radius: 4px;
+  text-align: left;
+  font-size: 16px;
+  left: 0;
+  color: #364150;
+  text-transform: none;
+  font-weight: 400;
+
+  &.right {
+    right: 2px;
+    left: initial;
+
+    &:before {
+      right: 4px;
+    }
+  }
+
+  &.top {
+    top: initial !important;
+    bottom: 100%;
+    margin-bottom: 10px;
+
+    &:before {
+      bottom: -8px;
+      top: initial;
+      border-top: 8px solid #fff;
+      border-bottom: 0;
+    }
+  }
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    border-bottom: 8px solid #fff;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    top: -8px;
+  }
+
+  .helpAction {
+    margin-top: 15px;
+
+    .btn {
+      padding: 6px !important;
+    }
+  }
+}
+
+.helpActive {
+  .helpItem {
+    position: relative;
+    z-index: 41;
+  }
+}

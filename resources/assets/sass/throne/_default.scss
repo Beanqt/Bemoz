@@ -1,0 +1,178 @@
+body {
+  font-family: 'OpenSans', sans-serif;
+  background: #f7f7f7;
+  padding-top: 80px;
+  padding-bottom: 40px;
+  overflow-x: hidden;
+}
+
+.hambi {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: 1px solid transparent;
+
+  .icon-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+    background: #fff;
+    margin-top: 4px;
+
+    @include prefixer(border-radius, 1px, moz webkit spec);
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+.page-header {
+  border: 0;
+  margin: 0 0 5px 0;
+  padding-bottom: 9px;
+  font-size: 22px;
+  text-transform: uppercase;
+
+  .btn {
+    font-size: 12px;
+    padding: 3px 5px;
+    line-height: 13px;
+    margin-top: 2px;
+  }
+  form {
+    line-height: 14px;
+  }
+  h1 {
+    font-size: 22px;
+    margin: 0;
+    text-transform: uppercase;
+  }
+}
+.relativeBox {
+  position: relative;
+
+  > .loader {
+    left: -15px;
+    top: -15px;
+    right: -15px;
+    bottom: -15px;
+  }
+}
+.delete-tooltip {
+  display: inline-block;
+}
+.inline {
+  display: inline-block;
+  vertical-align: middle;
+}
+.static {
+  position: static;
+}
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+.fixed {
+  position: fixed;
+}
+.inline-row {
+  font-size: 0;
+}
+.inline-col {
+  font-size: 14px;
+  display: inline-block;
+  vertical-align: top;
+  float: none;
+  text-align: left;
+}
+.inline-table {
+  display: table;
+  width: 100%;
+  margin: 0;
+}
+.inline-cell {
+  display: table-cell;
+  float: none;
+  vertical-align: middle;
+}
+.version {
+  position: fixed;
+  bottom: 0;
+  right: 4px;
+  font-size: 11px;
+}
+.relative {
+  position: relative;
+}
+.sticky {
+  position: sticky;
+  top: 56px;
+  z-index: 2;
+}
+.content {
+  opacity: 0;
+  visibility: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.pagination {
+  >.active {
+    >a, >a:focus, >a:hover, >span, >span:focus, >span:hover  {
+      background-color: #364150;
+      border-color: #364150;
+    }
+  }
+
+  >li>a, >li>span {
+    color: #364150;
+  }
+}
+
+.mini-sortable {
+  .dd3-handle {
+    left: -16px;
+    top: -9px;
+    cursor: move;
+    width: 30px;
+    height: 25px;
+    line-height: 10px;
+    overflow: initial;
+    border-radius: 3px;
+    z-index: 2;
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: -8px;
+      left: 1px;
+      border-left: 14px solid transparent;
+      border-top: 7px solid #191d2b;
+    }
+  }
+}
+
+.visible-hide {
+  position: absolute !important;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  z-index: -1;
+}
+
+@media screen and (min-width: 1490px) {
+  .container {
+    width: 1400px;
+    max-width: 100%;
+  }
+}

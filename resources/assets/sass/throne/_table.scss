@@ -1,0 +1,45 @@
+.table {
+  .filter {
+    th {
+      padding: 8px 4px;
+      font-weight: 400;
+
+      .form-control, .chosen-single {
+        font-size: 12px;
+        height: 28px;
+        padding: 5px 12px;
+      }
+      .chosen-container-single .chosen-single div b {
+        background-position: 0 5px;
+      }
+      .chosen-container-active.chosen-with-drop .chosen-single div b {
+        background-position: -18px 5px;
+      }
+
+      .btn {
+        padding: 3px 6px;
+      }
+      .customSelect>ul li:not(.selected-no-option) {
+        padding: 6px 12px;
+      }
+    }
+  }
+
+  >thead>tr>th, >tbody>tr>td, >tfoot>tr>td {
+    padding: 3px 4px;
+    font-size: 12px;
+    vertical-align: middle;
+  }
+
+  .paginate-tr {
+    .pagination {
+      margin: 15px 0 0 0;
+    }
+    &:hover {
+      background: transparent;
+    }
+  }
+}
+.table-hover>tbody>tr:hover {
+  background-color: #e4e4e4;
+}

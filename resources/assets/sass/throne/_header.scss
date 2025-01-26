@@ -1,0 +1,71 @@
+.header {
+  position: fixed;
+  background: #364150;
+  color: #fff;
+  padding: 15px;
+  width: 100%;
+  z-index: 40;
+  top: 0;
+
+  @include prefixer(box-shadow, 0 1px 1px rgba(0,0,0,0.2), moz webkit spec);
+
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+  .hambi {
+    display: none;
+  }
+  .brand {
+    font-size: 18px;
+  }
+  .lang {
+    display: inline-block;
+    margin-left: 15px;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 15px;
+    
+    .choose-language {
+      background: #1e252f;
+      padding: 2px 4px;
+      @include prefixer(border-radius, 3px, moz webkit spec);
+
+      &.active {
+        background: #fff;
+        color: #364150;
+      }
+    }
+  }
+  .navbar-top {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    .open .dropdown-toggle {
+      background: #1e252f;
+    }
+
+    > li {
+      display: inline-block;
+      margin-left: 10px;
+
+      .dropdown-toggle {
+        padding: 17px 10px;
+        height: 55px;
+        display: block;
+        cursor: pointer;
+
+        &:hover, &:focus {
+          background: #1e252f;
+        }
+      }
+
+      ul {
+        right: 0;
+        left: initial;
+      }
+    }
+  }
+}

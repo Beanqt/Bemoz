@@ -1,0 +1,146 @@
+header {
+  background: #ddd;
+  padding: 13px 0 16px;
+
+  @include prefixer(box-shadow, 0 1px 1px rgba(0,0,0,0.1), moz webkit spec);
+
+  .logo {
+    background: url(/images/logo.png) no-repeat;
+    background-size: 100%;
+    width: 150px;
+    height: 34px;
+    display: inline-block;
+  }
+
+  .top-bar {
+    >.inline-col {
+      vertical-align: middle;
+    }
+
+    .user-box {
+      position: relative;
+
+      &:before {
+        content: '';
+        position: absolute;
+        height: 22px;
+        width: 1px;
+        background: #d5d7d7;
+      }
+
+      a {
+        margin-top: 3px;
+        margin-right: 15px;
+        margin-left: 18px;
+        font-size: 18px;
+        color: #55acd0;
+      }
+    }
+
+    .lang-box {
+      button {
+        text-shadow: 0 1px 0 rgba(23, 23, 23, 0.25);
+        background: #55acd0;
+        border: none;
+        color: #fff;
+        padding: 6px 11px 6px 16px;
+        outline: none;
+
+        @include prefixer(border-radius, 2px , moz webkit spec);
+
+        .lang-title {
+          margin-right: 24px;
+          position: relative;
+
+          &:after {
+            position: absolute;
+            content: '';
+            height: 22px;
+            width: 1px;
+            background: rgba(2, 2, 2, 0.2);
+            right: -15px;
+            top: -1px;
+
+            @include prefixer(box-shadow, 1px 0 0 0 rgba(253, 253, 253, 0.20), moz webkit spec);
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin media-header-991-down {
+  header {
+    padding: 10px 0 0 0;
+
+    .container {
+      width: 100% !important;
+    }
+
+    .logo {
+      margin-left: 15px;
+    }
+
+    .top-bar {
+      position: absolute;
+      right: 0;
+      top: -43px;
+      padding-right: 7px;
+      margin-top: 6px;
+
+      .lang-box {
+        button {
+          padding: 6px 11px 6px 10px;
+
+          >div {
+            display: none;
+          }
+
+          >span {
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+
+  .ajax-search {
+    width: 150px;
+  }
+}
+
+@mixin media-header-767-down {
+  header {
+    padding: 10px 0 0 0;
+
+    .logo {
+      background-repeat: no-repeat !important;
+      background-size: 70% !important;
+      height: 67px;
+    }
+
+    .social {
+      display: none;
+    }
+  }
+
+  .ajax-search {
+    width: 34px;
+
+    .searchInput {
+      display: none;
+    }
+
+    .input-group {
+      border: none;
+    }
+
+    .input-group-addon button {
+      background: transparent !important;
+
+      .icon-search {
+        background-image: url(/images/icons/search_blue.png);
+      }
+    }
+  }
+}

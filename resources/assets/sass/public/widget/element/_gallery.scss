@@ -1,0 +1,30 @@
+.gallerySimple {
+  .embedBox {
+    min-height: 336px;
+  }
+
+  .elements {
+    .item {
+      width: 33.333333%;
+
+      .icon-box {
+        height: 200px;
+        line-height: 200px;
+      }
+
+      .image-box {
+        height: 200px;
+      }
+    }
+  }
+}
+.galleryBox {
+  .carousel {
+    img {
+      width: 100%;
+    }
+  }
+  .carousel-indicators {
+    line-height: 20px;
+  }
+}

@@ -1,0 +1,17 @@
+.labels {
+  display: inline-block;
+
+  &.label-active {
+    background: #5CB85C;
+  }
+  &.label-inactive {
+    background: #D9534F;
+  }
+
+  &.label-active, &.label-inactive {
+    width: 10px;
+    height: 10px;
+
+    @include prefixer(border-radius, 10px, moz webkit spec);
+  }
+}

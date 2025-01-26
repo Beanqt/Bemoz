@@ -1,0 +1,18 @@
+.table-default {
+  >thead {
+    border-bottom: 1px solid #a4a5ad;
+
+    >tr>th {
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      border: 0;
+      color: #df5e5b;
+      font-weight: 700;
+    }
+  }
+
+  >tbody>tr>td {
+    color: #3e404a;
+    border-top: 1px solid #a4a5ad;
+  }
+}

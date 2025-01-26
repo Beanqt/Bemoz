@@ -1,0 +1,36 @@
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  @include media-widget-box-image-992-1199();
+}
+
+@media screen and (max-width: 991px) {
+  @include media-slider-991-down();
+  @include media-widget-box-image-991-down();
+  @include media-widget-counter-991-down();
+  @include media-menu-991-down();
+  @include media-header-991-down();
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+
+}
+
+@media screen and (max-width: 767px) {
+  @include media-widget-parallax-767-down();
+  @include media-dropdown-767-down();
+  @include media-header-767-down();
+  @include media-menu-767-down();
+}
+
+@media screen and (min-width: 520px) and (max-width: 767px) {
+  @include media-embed-520-767();
+}
+
+@media screen and (max-width: 520px) {
+  @include media-widget-category-520-down();
+  @include media-widget-counter-520-down();
+  @include media-embed-520-down();
+}
+
+@media screen and (max-width: 460px) {
+
+}

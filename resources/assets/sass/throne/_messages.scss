@@ -1,0 +1,64 @@
+.messages {
+  position: fixed;
+  top: 65px;
+  right: 0;
+  z-index: 1100;
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    li {
+      width: 240px;
+      padding: 15px 15px 15px 30px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+      position: relative;
+      left: 100%;
+
+      @include prefixer(border-radius, 4px 0 0 4px, moz webkit spec);
+      @include prefixer(transition, all .3s ease-out, moz webkit spec);
+
+      &.error {
+        color: #ffffff;
+        background-color: #d9534f;
+
+        &:before {
+          content: '\f06a';
+        }
+      }
+      &.success {
+        color: #ffffff;
+        background-color: #5cb85c;
+
+        &:before {
+          content: '\f058';
+        }
+      }
+      &.warning {
+        color: #364150;
+        background-color: #faebcc;
+
+        &:before {
+          content: '\f05a';
+        }
+      }
+
+      &.active {
+        left: 0;
+      }
+
+      &:before {
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        margin-top: -8px;
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        font-size: 16px;
+        line-height: 16px;
+      }
+    }
+  }
+}
