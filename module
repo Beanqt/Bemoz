@@ -1,0 +1,874 @@
+#!/usr/bin/env php
+<?php
+
+class ModuleCreator {
+    public $db;
+    public $namespace;
+    public $type;
+    public $options = [];
+    public $columns;
+
+    public $types = [
+        'simple page' => 'simple',
+        'category' => 'category',
+        'category and item' => ['category_item', 'category'],
+        'switchboard' => 'pilot',
+        'module within the module' => 'boss',
+    ];
+
+    public $commands = [
+        'empty' => 'Module create',
+        'install' => 'Laravel install with env and database',
+        'column:add' => 'Add column to table',
+        'column:drop' => 'Drop column in table',
+        'column:change' => 'Change column in table',
+    ];
+
+    public function __construct($argv){
+        if(isset($argv[1])){
+            if($argv[1] == 'install'){
+                return $this->install();
+            }elseif(in_array($argv[1], ['column:add', 'column:drop', 'column:change'])){
+                if(isset($argv[2], $argv[3])){
+                    if($argv[1] == 'column:add'){
+                        return $this->columnAdd($argv[2], $argv[3], isset($argv[4]) ? $argv[4] : '');
+                    }elseif($argv[1] == 'column:drop'){
+                        return $this->columnDrop($argv[2], $argv[3]);
+                    }elseif($argv[1] == 'column:change'){
+                        return $this->columnAdd($argv[2], $argv[3], (isset($argv[4]) ? $argv[4].',' : '').'change', true);
+                    }
+                }else{
+                    echo $this->color('Missing column options: column table', 'red')."\n";
+                    exit();
+                }
+            }elseif($argv[1] == '-h'){
+                foreach($this->commands as $key => $option){
+                    echo $this->color($key, 'green')." => ".$option."\n";
+                }
+                exit();
+            }
+        }
+
+        $migrations = glob('database/migrations/*_create_*.php');
+        $migrations = array_map(function($item){return preg_replace('/.*_create_(.*)_table.*/', '$1', $item); }, $migrations);
+
+        $type = $this->choice('Module type', array_keys($this->types));
+        $type_key = array_keys($this->types)[$type];
+        $this->type = $this->types[$type_key];
+
+        if($this->type != 'pilot'){
+            $ask_options = [
+                1 => 'image',
+                2 => 'order',
+                3 => 'content',
+            ];
+            if($type_key == 'category and item'){
+                $ask_options[] = 'category image';
+            }
+
+            $options = $this->ask("Other options separated by ','.", $ask_options);
+        }
+
+        $db = $this->ask('Table name');
+
+        if(in_array($db, $migrations)){
+            echo $this->color('There is already this table', 'red')."\n";
+            exit();
+        }
+
+        if(isset($options) && $options != " "){
+            $this->options = str_split(isset($options) ? $options : '');
+        }
+
+        $this->db[] = $db;
+        $this->namespace[] = $this->getNamespace($db);
+
+        if($type_key == 'category and item'){
+            $category_name = rtrim($db, 's').'_categories';
+            $this->db[] = $category_name;
+            $this->namespace[] = $this->getNamespace($category_name);
+        }
+
+        $this->makeMigration();
+        $this->makeModel();
+
+        if($this->type != 'pilot') {
+            $this->makeController();
+            $this->makeView();
+        }
+    }
+
+    private function color($string, $color){
+        $colors = [
+            'yellow' => '0;33',
+            'red' => '0;31',
+            'blue' => '0;34',
+            'green' => '0;32',
+        ];
+
+        return "\033[".$colors[$color]."m".$string."\033[0m";
+    }
+    private function ask($msg, $options = []){
+        echo $this->color($msg, 'green')."\n";
+
+        foreach($options as $key => $option){
+            echo '['.$this->color($key, 'yellow').'] '.$option."\n";
+        }
+
+        return $this->getInput();
+    }
+    private function choice($msg, $options){
+        echo $this->color($msg, 'green').":\n";
+        foreach($options as $key => $option){
+            echo '['.$this->color($key, 'yellow').'] '.$option."\n";
+        }
+
+        $value = $this->getInput();
+
+        if(!isset($options[$value])){
+            echo $this->color('[Error] "'.$value.'" is invalid', 'red')."\n";
+            return $this->choice($msg, $options);
+        }
+        return $value;
+    }
+
+    private function getInput(){
+        $handle = fopen("php://stdin","r");
+        $value = str_replace(["\r","\n"], '', fgets($handle));
+
+        return is_numeric($value) ? (int) $value : $value;
+    }
+
+    private function getNamespace($name){
+        $array = explode('_',$name);
+        $name = array_map('ucfirst', $array);
+
+        return implode('', $name);
+    }
+
+    public function install(){
+        $config = file_get_contents('.env.local');
+        preg_match("/APP_NAME=(.*)/", $config, $match);
+        $name = trim(isset($match[1]) ? $match[1] : 'default');
+
+        if($name == 'default'){
+            $name = $this->ask('Project name');
+            $config = preg_replace("/APP_NAME=(.*)/", "APP_NAME=".$name, $config);
+            $config = preg_replace("/DB_DATABASE=(.*)/", "DB_DATABASE=".$name, $config);
+            file_put_contents('.env.local', $config);
+        }
+
+        $host = file_get_contents('C:\Windows\System32\drivers\etc\hosts');
+
+        if(!preg_match("/".$name."\\.local/", $host, $match)){
+            file_put_contents('C:\Windows\System32\drivers\etc\hosts', $host."\n127.0.0.1 ".$name.".local");
+        }
+
+        $apache_path = glob('C:\\wamp64\\bin\\apache\\*');
+        $apache_path = isset($apache_path[0]) ? $apache_path[0] : '';
+
+        if($apache_path){
+            $vhost = file_get_contents($apache_path.'\\conf\\extra\\httpd-vhosts.conf');
+
+            if(!preg_match("/".$name."\\.local/", $vhost, $match)){
+                $project_path = dirname(__FILE__);
+                $new_vhost = <<<EOD
+<VirtualHost *:80>
+	ServerName $name.local
+	DocumentRoot "$project_path/public"
+	<Directory  "$project_path/public">
+		Options +Indexes +Includes +FollowSymLinks +MultiViews
+		AllowOverride All
+	</Directory>
+</VirtualHost>
+EOD;
+                file_put_contents($apache_path.'\\conf\\extra\\httpd-vhosts.conf', $vhost."\n\n".$new_vhost);
+            }
+        }else{
+            echo $this->color('[Error] Virtualhost was not created', 'red')."\n";
+        }
+
+        if(!file_exists('.env')){
+            copy('.env.local', '.env');
+            echo $this->color('Create .env file', 'green')."\n";
+
+            shell_exec('composer install');
+        }
+
+        $content = file_get_contents('.env');
+        $content = explode("\n", $content);
+        $env = [];
+
+        array_map(function($item) use(&$env){
+            $array = explode('=', $item);
+            $env[$array[0]] = isset($array[1]) ? $array[1] : '';
+        }, $content);
+
+        $env['DB_HOST'] = trim($env['DB_HOST']);
+        $env['DB_USERNAME'] = trim($env['DB_USERNAME']);
+        $env['DB_PASSWORD'] = trim($env['DB_PASSWORD']);
+        $env['DB_DATABASE'] = trim($env['DB_DATABASE']);
+
+        $dbh = new PDO('mysql:host='.$env['DB_HOST'], $env['DB_USERNAME'], $env['DB_PASSWORD']);
+
+        $dbh->exec("CREATE DATABASE IF NOT EXISTS `".$env['DB_DATABASE']."`;");
+
+        echo $this->color('The table is ready', 'green')."\n";
+
+        shell_exec('php artisan key:generate');
+        shell_exec('php artisan migrate');
+        shell_exec('php artisan db:seed');
+        shell_exec('gulp install');
+    }
+
+    public function makeMigration(){
+        foreach($this->db as $key => $item){
+            $namespace = $this->namespace[$key];
+            $filename = date('Y_m_d_His').'_create_'.$item.'_table';
+
+            if($this->type == 'pilot'){
+                $array_columns = [
+                    "\$table->integer('item');",
+                    "\$table->integer('category');",
+                ];
+
+                $array_index = [
+                    "\$table->index('item');",
+                    "\$table->index('category');",
+                ];
+            }else{
+                $array_columns = [
+                    "\$table->increments('id');",
+                    "\$table->integer('lang');",
+                    "\$table->string('title');",
+                    "\$table->string('slug');",
+                ];
+
+                $array_index = [
+                    "\$table->index('lang');",
+                    "\$table->index('slug');",
+                ];
+
+                if(is_array($this->type) && $key == 0){
+                    $array_columns[] = "\$table->integer('category');";
+                }
+                if($this->type == 'boss'){
+                    $array_columns[] = "\$table->integer('boss');";
+                }
+                if((is_array($this->type) ? in_array(3, $this->options) && $key == 0 : in_array(3, $this->options))){
+                    $array_columns[] = "\$table->longText('content');";
+                }
+                if((is_array($this->type) ? ((in_array(4, $this->options) && $key == 1) || (in_array(1, $this->options) && $key == 0)) : in_array(1, $this->options))){
+                    $array_columns[] = "\$table->string('image');";
+                    $array_columns[] = "\$table->string('image_crop');";
+                }
+
+                if((is_array($this->type) && $key == 1) || ($this->type == 'category')){
+                    $array_columns[] = "\$table->boolean('active');";
+                    $array_columns[] = "\$table->integer('order');";
+                    $array_columns[] = "\$table->timestamps();";
+                    $array_columns[] = "\$table->softDeletes();";
+
+                    $array_index[] = "\$table->index('active');";
+                }else{
+                    $array_columns[] = "\$table->dateTime('public_at');";
+                    $array_columns[] = "\$table->dateTime('finish_at');";
+                    $array_columns[] = "\$table->boolean('active');";
+                    if(in_array(2, $this->options)){
+                        $array_columns[] = "\$table->integer('order');";
+                    }
+                    $array_columns[] = "\$table->boolean('auth');";
+                    $array_columns[] = "\$table->timestamps();";
+                    $array_columns[] = "\$table->softDeletes();";
+
+                    if(is_array($this->type) && $key == 0){
+                        $array_index[] = "\$table->index('category');";
+                    }
+                    if($this->type == 'boss'){
+                        $array_index[] = "\$table->index('boss');";
+                    }
+                    $array_index[] = "\$table->index('active');";
+                }
+            }
+
+            $content = <<<EOD
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class Create{$namespace}Table extends Migration {
+    public \$name = '{$item}';
+
+    public function up(){
+        if(!Schema::hasTable(\$this->name)){
+            Schema::create(\$this->name, function (Blueprint \$table) {{$this->getRenderSting($array_columns, 3, $this->newRow().$this->addTab(3))}{$this->getRenderSting($array_index, 3, $this->newRow(2).$this->addTab(3))}
+            });
+        }
+    }
+
+    public function down() {
+        Schema::dropIfExists(\$this->name);
+    }
+}
+EOD;
+
+            file_put_contents('database/migrations/'.$filename.'.php', $content);
+        }
+    }
+
+    public function makeModel(){
+        foreach($this->namespace as $key => $item){
+            $db = $this->db[$key];
+            $image = (is_array($this->type) ? ((in_array(4, $this->options) && $key == 1) || (in_array(1, $this->options) && $key == 0)) : in_array(1, $this->options));
+
+            if($this->type != 'pilot'){
+                $use_models = [];
+                $traits = [];
+                $scopes = [];
+                $relations = [];
+                $after_save = [];
+                $validator_query = '';
+                $image_validator = '';
+                $boss = '';
+                $data = [
+                    'image' => '',
+                    'category' => '',
+                    'other' => [],
+                ];
+
+                $traits[] = 'use SoftDeletes;';
+                $traits[] = 'use LogTrait;';
+                $traits[] = '';
+                $use_models[] = 'use Illuminate\Database\Eloquent\SoftDeletes;';
+                $use_models[] = 'use Illuminate\Support\Facades\Validator;';
+
+                if((is_array($this->type) ? in_array(3, $this->options) && $key == 0 : in_array(3, $this->options))){
+                    $data['other'][] = "\$model->content = \$e['layout'];";
+                    $after_save[] = "\$model->seo = Seo::saveData(\$e, self::\$name, \$model->id)->toArray();";
+                }
+                if($image){
+                    $use_models[] = 'use App\Http\Controllers\Slim\Slim;';
+                    $image_validator = <<<EOD
+\$image = new Slim();
+            if(!\$edit && !\$image->hasImage()){
+                \$validator->errors()->add('image', trans('admin.alert.noimage'));
+            }
+EOD;
+                    $image_validator .= $this->newRow().$this->addTab(3);
+                    $data['image'] .= $this->newRow();
+                    $data['image'] .= <<<EOD
+        \$image = new Slim();
+        if(\$image->hasImage()){
+            \$image->save(self::\$name);
+            \$model->image = \$image->getName();
+            \$model->image_crop = \$image->getCrop();
+        }
+EOD;
+                    $after_save[] = <<<EOD
+if(\$data && \$image->hasImage() && !empty(\$data['image'])){
+            \$image->remove(self::\$name, \$data['image']);
+        }
+EOD;
+                }
+
+                if(is_array($this->type) && $key == 0){
+                    $validator_query .= "->where('category', isset(\$e['category']) ? \$e['category'] : '')";
+
+                    $data['category'] .= $this->newRow().$this->addTab(2)."\$model->category = \$e['category'];";
+                }
+                if($this->type == 'boss'){
+                    $validator_query .= "->where('boss', isset(\$e['boss']) ? \$e['boss'] : '')";
+                    $boss .= $this->newRow(1).$this->addTab(3).'$model->boss = $e[\'boss\'];';
+                }
+
+                $scopes[] = $this->newRow();
+                if(is_array($this->type) ? $key == 0 : in_array($this->type, ['simple','boss'])){
+                    $scopes[] = <<<EOD
+public function scopeAuth(\$query) {
+        return \$query->whereIn('auth', session('visitor_type') ? session('visitor_type') : []);
+    }
+    public function scopePublic(\$query) {
+        return \$query->whereRaw('(active = 1 AND (public_at <= NOW() AND (finish_at >= NOW() OR finish_at = "0000-00-00 00:00:00")))');
+    }
+EOD;
+
+                    $data['other'][] = "\$model->public_at = \$e['public_at'];";
+                    $data['other'][] = "\$model->finish_at = \$e['finish_at'];";
+                    $data['other'][] = "\$model->auth = isset(\$e['auth']) ? \$e['auth'] : 0;";
+                }else{
+                    $scopes[] = <<<EOD
+public function scopePublic(\$query) {
+        return \$query->where('active', 1);
+    }
+EOD;
+                }
+
+                $scopes[] = <<<EOD
+public function scopeLang(\$query) {
+        return \$query->where('lang', app('LanguageService')->getLangId());
+    }
+EOD;
+                if(is_array($this->type) && $key == 0){
+                    $relations[] = <<<EOD
+public function categories() {
+        return \$this->belongsTo({$this->namespace[1]}::class, 'category', 'id')->lang()->public();
+    }
+    public function throneCategories() {
+        return \$this->belongsTo({$this->namespace[1]}::class, 'category', 'id');
+    }
+EOD;
+                }elseif(is_array($this->type) && $key == 1){
+                    $relations[] = <<<EOD
+public function items() {
+        return \$this->hasMany({$this->namespace[0]}::class, 'category', 'id')->public();
+    }
+    public function throneItems() {
+        return \$this->hasMany({$this->namespace[0]}::class, 'category', 'id');
+    }
+EOD;
+                }
+
+                if((is_array($this->type) ? in_array(3, $this->options) && $key == 0 : in_array(3, $this->options))){
+                    $relations[] = <<<EOD
+public function seo() {
+        return \$this->belongsTo(Seo::class, 'id', 'element')->where('type', self::\$name);
+    }
+EOD;
+                }
+
+                if(!empty($use_models)){
+                    array_unshift($use_models, '');
+                }
+                if(!empty($relations)){
+                    array_unshift($relations, '');
+                }
+                if(!empty($data['other'])){
+                    array_unshift($data['other'], '');
+                }
+                if(!empty($after_save)){
+                    array_unshift($after_save, '');
+                }
+
+                $content = <<<EOD
+<?php namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;{$this->getRenderSting($use_models, 0)}
+
+class {$item} extends Model {{$this->getRenderSting($traits, 1, $this->newRow().$this->addTab(1))}
+    public static \$name = '{$db}';
+    public static \$permissions = ['read', 'new', 'edit', 'delete', 'trash'];
+    public \$validator = [];
+
+    protected \$table = '{$db}';
+    public \$lists = [
+        'id',
+        'title',
+    ];
+
+    public function isValid(\$e, \$edit = null){
+        \$messages = [
+            'required' => trans('admin.alert.required')
+        ];
+        \$rules = [
+            'title' => 'required',
+            'slug' => 'required'
+        ];
+
+        \$validator = Validator::make(\$e,\$rules,\$messages);
+
+        \$validator->after(function (\$validator) use(\$edit, \$e) {
+            \$result = self::where('slug', \$e['slug'])->where('lang', \$e['lang']){$validator_query}->count();
+
+            {$image_validator}if((\$edit && \$result && \$edit['slug'] != \$e['slug']) || (!\$edit && \$result)){
+                \$validator->errors()->add('slug', trans('admin.'.self::\$name.'.alerts.have'));
+            }
+        });
+
+        if(!\$validator->fails()){
+            return true;
+        }
+
+        session()->flash('error', trans('admin.alert.haveError'));
+        \$this->validator = \$validator;
+        return false;
+    }
+
+    public function saveData(\$e, \$data = null){
+        if(\$data){
+            \$model = self::find(\$data['id']);
+        }else{
+            \$model = new self();
+            \$model->lang = \$e['lang'];{$boss}
+        }
+        {$data['image']}{$data['category']}
+        \$model->title = \$e['title'];
+        \$model->slug = \$e['slug'];{$this->getRenderSting($data['other'], 2)}
+        \$model->save();{$this->getRenderSting($after_save, 2, $this->newRow().$this->addTab(2))}
+
+        return \$model;
+    }{$this->getRenderSting($scopes, 1)}{$this->getRenderSting($relations, 1)}
+}
+EOD;
+            }else{
+                $content = <<<EOD
+<?php namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class {$item} extends Model {
+    protected \$table = '{$db}';
+
+    public static function add(\$id, \$e){
+        self::where('item', \$id)->delete();
+
+        if(isset(\$e['categories']) && !empty(\$e['categories'])){
+            \$data = [];
+
+            foreach(\$e['categories'] as \$category){
+                \$data[] = [
+                    'item' => \$id,
+                    'category' => \$category,
+                ];
+            }
+
+            self::insert(\$data);
+        }
+
+        return isset(\$e['label']) ? \$e['label'] : [];
+    }
+}
+EOD;
+            }
+
+            file_put_contents('app/Models/'.$item.'.php', $content);
+        }
+    }
+
+    public function makeController(){
+        foreach($this->namespace as $key => $item){
+            $db = $this->db[$key];
+            $use_models = [];
+            $options = [];
+            $functions = [];
+            $use_models[] = 'use App\Models\\'.$item.';';
+            $boss = [
+                'model' => '',
+                'back' => '',
+                'view' => '',
+            ];
+
+            if(in_array(2, $this->options)){
+                $options[] = "\$this->order = ['order', 'asc'];";
+            }
+            if($this->type == 'boss'){
+                $options[] = "\$this->boss = ['boss', \$this->getRouteParameter()];";
+                $boss['model'] = "MainModel \$main_model, ";
+                $boss['back'] = $this->newRow().$this->addTab(2)."\$this->main_model = \$main_model::\$name;";
+                $boss['view'] = $this->newRow().$this->addTab(2)."View::share('boss', \$this->boss[1]);";
+            }
+            if((is_array($this->type) ? ((in_array(4, $this->options) && $key == 1) || (in_array(1, $this->options) && $key == 0)) : in_array(1, $this->options))){
+                $options[] = "\$this->clear_inputs = ['image','image_crop'];";
+            }
+            if((is_array($this->type) ? in_array(3, $this->options) && $key == 0 : in_array(3, $this->options))){
+                $options[] = "\$this->archive = true;".$this->newRow().$this->addTab(2)."\$this->edit = function(\$data){".$this->newRow().$this->addTab(3)."\$data['layout'] = json_decode(\$data['content'], true);".$this->newRow().$this->addTab(2)."};";
+            }
+            if(is_array($this->type) && $key == 0){
+                $use_models[] = 'use App\Models\\'.$this->namespace[1].';';
+                $functions[] = <<<EOD
+
+    public function lists(){
+        View::share('categories', {$this->namespace[1]}::where('lang', \$this->lang)->get());
+    }
+    public function creation(){
+        View::share('categories', {$this->namespace[1]}::where('lang', \$this->lang)->get());
+    }
+    public function update(){
+        View::share('categories', {$this->namespace[1]}::where('lang', \$this->lang)->get());
+    }
+EOD;
+            }
+            if($this->type == 'boss' || is_array($this->type) && $key == 0){
+                $use_models[] = 'use Illuminate\Support\Facades\View;';
+            }
+
+            if(!empty($options)){
+                array_unshift($options, '');
+            }
+            $content = <<<EOD
+<?php namespace App\Http\Controllers\Throne;
+
+{$this->getRenderSting($use_models, 0)}
+
+class {$item}Controller extends Controller
+{
+    public \$deleteCache = [
+        '{$db}.{main_lang}.{slug}',
+    ];
+
+    public function __construct({$boss['model']}{$item} \$model){{$boss['back']}
+        \$this->model = \$model;
+        \$this->default = \$model::\$name;{$this->getRenderSting($options, 2)}
+
+        \$this->getLang();{$boss['view']}
+    }{$this->getRenderSting($functions, 1)}
+}
+EOD;
+
+            file_put_contents('app/Http/Controllers/Throne/'.$item.'Controller.php', $content);
+        }
+    }
+
+    public function makeView(){
+        foreach($this->namespace as $key => $item){
+            $namespace = $this->db[$key];
+            $other = [];
+            $content_box = '';
+            $boss = $this->type == 'boss' ? ", \$boss" : "";
+            $image = '';
+            $seo = '';
+
+            if(!file_exists('resources/views/throne/layouts/'.$namespace)){
+                mkdir('resources/views/throne/layouts/'.$namespace);
+            }
+
+            if((is_array($this->type) ? in_array(3, $this->options) && $key == 0 : in_array(3, $this->options))){
+                $content_box = $this->newRow();
+                $content_box .= <<<EOD
+    @include('throne.widgets.creator.loader', ['name' => 'layout', 'widgets' => [
+        'id'=>1,
+        'grid'=>true,
+        'content'=>true,
+        'button'=>true,
+        'gallery'=>true,
+        'videos'=>true,
+        'documents'=>true,
+        'forms'=>true,
+        'widget_box_list'=>true,
+        'widget_category'=>true,
+        'widget_counter'=>true,
+        'widget_parallax'=>true,
+        'widget_tab'=>true,
+        'widget_faq'=>true,
+        'widget_map'=>true,
+    ]])
+EOD;
+                $other[] = "@include('throne.widgets.template')";
+                $seo = $this->newRow();
+                $seo .= <<<EOD
+    <div class="box">
+        @include('throne.widgets.seo')
+    </div>
+EOD;
+            }
+            if((is_array($this->type) ? ((in_array(4, $this->options) && $key == 1) || (in_array(1, $this->options) && $key == 0)) : in_array(1, $this->options))){
+                $image = $this->newRow();
+                $image .= <<<EOD
+    <div class="box">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group {{\$errors->has('image') ? 'has-error' : ''}}">
+                    @include('throne.widgets.slim', [
+                        'title' => trans('admin.'.\$service->default.'.form.image'),
+                        'required' => true,
+                        'width' => 700,
+                        'height' => 700,
+                        'url' => \$service->default,
+                        'data' => isset(\$data) ? \$data : ''
+                    ])
+
+                    <div class="help-block with-errors">
+                        {!! \$errors->first('image', '<ul class="list-unstyled"><li>:message</li></ul>') !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+EOD;
+            }
+            if(is_array($this->type) && $key == 0) {
+                $other[] = <<<EOD
+<div class="form-group">
+            <label for="category">@lang('admin.'.\$service->default.'.form.category.title')</label>
+            <select class="form-control form-custom-select" name="category" id="category">
+                <option value="" {{!isset(\$data['category']) || (isset(\$data['category']) && empty(\$data['category'])) ? 'selected' : ''}}>@lang('admin.'.\$service->default.'.form.category.placeholder')</option>
+                @foreach(\$categories as \$category)
+                    <option value="{{\$category['id']}}" {{isset(\$data['category']) && \$category['id'] == \$data['category'] ? 'selected' : ''}}>{{\$category['title']}}</option>
+                @endforeach
+            </select>
+        </div>
+EOD;
+            }
+            if(!((is_array($this->type) && $key == 1) || ($this->type == 'category'))){
+                $other[] = "@include('throne.widgets.public')";
+                $other[] = "@include('throne.widgets.auth')";
+            }
+
+            if(!empty($other)){
+                $other = $this->newRow().$this->addTab(1).'<div class="box">'.$this->newRow().$this->addTab(2).$this->getRenderSting($other, 2).$this->newRow().$this->addTab(1).'</div>';
+            }else{
+                $other = '';
+            }
+
+            $content = <<<EOD
+<form method="post">
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <input type="hidden" id="submit" name="submit" value="1">
+    <div class="box">
+        <div class="form-group {{\$errors->has('title') ? 'has-error' : ''}}">
+            <label for="title">@lang('admin.'.\$service->default.'.form.title')<span class="required">*</span></label>
+            <input type="text" class="form-control" name="title" id="title" value="{{\$data['title'] ?? ''}}" required>
+            <div class="help-block with-errors">
+                {!! \$errors->first('title', '<ul class="list-unstyled"><li>:message</li></ul>') !!}
+            </div>
+        </div>
+        <div class="form-group {{\$errors->has('slug') ? 'has-error' : ''}}">
+            <label for="slug">@lang('admin.'.\$service->default.'.form.slug')<span class="required">*</span></label>
+            <input type="text" class="form-control" name="slug" id="slug" value="{{\$data['slug'] ?? ''}}" required>
+            <div class="help-block with-errors">
+                {!! \$errors->first('slug', '<ul class="list-unstyled"><li>:message</li></ul>') !!}
+            </div>
+        </div>
+    </div>{$content_box}{$other}{$image}{$seo}
+
+    @include('throne.widgets.actions', [
+        'save' => true,
+        'saveClose' => true,
+        'saveNew' => true,
+        'cancel' => route('throne.'.\$service->default{$boss}),
+    ])
+</form>
+EOD;
+            file_put_contents('resources/views/throne/layouts/'.$namespace.'/form.blade.php', $content);
+        }
+    }
+
+    public function columnAdd($column, $table, $options, $change = false){
+        $array = explode(',', $column);
+        $columns = [];
+
+        if($options){
+            $options = explode(',', $options);
+            $options = count($options) ? implode('', array_map(function($item){return $item == 'change' ? '->change()' : '->'.str_replace(':',"('", $item)."')";}, $options)) : '';
+        }
+
+        array_walk($array, function($item) use(&$columns, $options){
+            $array = explode(':', $item);
+            $columns[$array[1]] = '$table->'.$array[0]."('".$array[1]."')".$options.";";
+        });
+
+        $column = implode('_', array_keys($columns));
+        $drops = implode("\n".$this->addTab(3), array_map(function($item){ return "\$table->dropColumn('".$item."');"; }, array_keys($columns)));
+        $columns = implode("\n".$this->addTab(3), $columns);
+
+        if($change){
+            $filename = date('Y_m_d_His').'_change_'.$column.'_in_'.$table;
+            $namespace = $this->getNamespace($column.'_in_'.$table);
+
+            $content = <<<EOD
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class Change{$namespace} extends Migration {
+    public function up()
+    {
+        Schema::table('{$table}', function (Blueprint \$table) {
+            {$columns}
+        });
+    }
+}
+EOD;
+        }else{
+            $filename = date('Y_m_d_His').'_add_'.$column.'_to_'.$table;
+            $namespace = $this->getNamespace($column.'_to_'.$table);
+
+            $content = <<<EOD
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class Add{$namespace} extends Migration {
+    public function up()
+    {
+        Schema::table('{$table}', function (Blueprint \$table) {
+            {$columns}
+        });
+    }
+
+    public function down() {
+        Schema::table('{$table}', function (Blueprint \$table) {
+            {$drops}
+        });
+    }
+}
+EOD;
+        }
+
+        file_put_contents('database/migrations/'.$filename.'.php', $content);
+        echo $this->color('Migration file created', 'green')."\n";
+        exec('git add database/migrations/'.$filename.'.php');
+        echo $this->color('Add to git', 'green')."\n";
+        exec('php artisan migrate');
+        echo $this->color('Migration file ran', 'green')."\n";
+    }
+
+    public function columnDrop($column, $table){
+        $array = explode(',', $column);
+        $columns = [];
+        array_walk($array, function($item) use(&$columns){
+            $columns[$item] = "\$table->dropColumn('".$item."');";
+        });
+
+        $column = implode('_', array_keys($columns));
+        $drops = implode("\n".$this->addTab(3), $columns);
+
+        $filename = date('Y_m_d_His').'_drop_'.$column.'_from_'.$table;
+        $namespace = $this->getNamespace($column.'_from_'.$table);
+
+        $content = <<<EOD
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class Drop{$namespace} extends Migration {
+    public function up()
+    {
+        Schema::table('{$table}', function (Blueprint \$table) {
+            {$drops}
+        });
+    }
+}
+EOD;
+        file_put_contents('database/migrations/'.$filename.'.php', $content);
+        echo $this->color('Migration file created', 'green')."\n";
+        exec('git add database/migrations/'.$filename.'.php');
+        echo $this->color('Add to git', 'green')."\n";
+        exec('php artisan migrate');
+        echo $this->color('Migration file ran', 'green')."\n";
+    }
+
+    public function getRenderSting($array, $tabs = 3, $content = '', $checkEmpty = true){
+        foreach($array as $key => $item){
+            $content .= $item.($key < count($array)-1 ? $this->newRow().$this->addTab($tabs) : '');
+        }
+
+        return $checkEmpty && count($array) ? $content : '';
+    }
+
+    public function newRow($number = 1){
+        return str_repeat("\n", $number);
+    }
+    public function addTab($number = 1){
+        return str_repeat("    ", $number);
+    }
+}
+
+$module = new ModuleCreator($argv);
